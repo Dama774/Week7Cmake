@@ -1,0 +1,29 @@
+plugins {
+    id 'cpp-library' // Плагин для работы с C++
+}
+
+library {
+    baseName = 'fibonacci'
+
+    // Здесь укажите директорию с исходными файлами
+    source.from fileTree(dir: 'src/main/cpp', include: ['main/main.cpp', 'fibonacci/fibonacci.h'])
+}
+
+model {
+    repositories {
+        // Используйте стандартный репозиторий для C++
+        mavenCentral()
+    }
+
+    components {
+        // Настройки компоновки
+        withType(NativeLibrarySpec) {
+            binaries {
+                withType(ExecutableBinarySpec) {
+                    cppCompiler.args '-std=c++17' // Укажите необходимый стандарт C++
+                }
+            }
+        }
+    }
+}
+
